@@ -13,7 +13,7 @@ app.use(cors());
 app.use(compression());
 
 // Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../public')));
+app.use(express.static(path.resolve(__dirname, '../dist')));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,12 +25,28 @@ app.use(bodyParser.json());
 app.post('/api/send-email', (req, res) => {
     const { name, company, email, message } = req.body;
 
+    const smtpUser = process.env.FOLIO_EMAIL;
+    const smtpPass = process.env.FOLIO_PASSWORD;
+    const toList = (process.env.FOLIO_TO_EMAILS || smtpUser)
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .join(', ');
+
+    if (!smtpUser || !smtpPass) {
+        res.status(500).json({
+            message:
+                'Server email is not configured (set FOLIO_EMAIL and FOLIO_PASSWORD).',
+        });
+        return;
+    }
+
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-            user: process.env.FOLIO_EMAIL,
-            pass: process.env.FOLIO_PASSWORD,
+            user: smtpUser,
+            pass: smtpPass,
         },
     });
 
@@ -39,8 +55,9 @@ app.post('/api/send-email', (req, res) => {
         .then(() => {
             transporter
                 .sendMail({
-                    from: `"${name}" <henryheffernan.folio@gmail.com>`, // sender address
-                    to: 'henryheffernan@gmail.com, henryheffernan.folio@gmail.com', // list of receivers
+                    from: `"${name}" <${smtpUser}>`, // sender address
+                    to: toList, // list of receivers
+                    replyTo: email,
                     subject: `${name} <${email}> ${
                         company ? `from ${company}` : ''
                     } submitted a contact form`, // Subject line

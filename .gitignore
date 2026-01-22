@@ -1,6 +1,11 @@
 node_modules
-package-lock.json
 .DS_Store
 *.psd
 
 public/
+dist/
+
+# Local environment files (do not commit secrets)
+.env
+.env.*
+!.env.example
