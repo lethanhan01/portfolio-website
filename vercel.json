@@ -1,8 +1,8 @@
 {
   "version": 2,
   "installCommand": "npm ci",
-  "buildCommand": "mkdir -p public && npm run build && test -f public/index.html",
-  "outputDirectory": "public",
+  "buildCommand": "mkdir -p dist && npm run build && test -f dist/index.html",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }

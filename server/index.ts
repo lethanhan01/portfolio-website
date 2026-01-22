@@ -13,7 +13,7 @@ app.use(cors());
 app.use(compression());
 
 // Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../public')));
+app.use(express.static(path.resolve(__dirname, '../dist')));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -3,6 +3,7 @@ node_modules
 *.psd
 
 public/
+dist/
 
 # Local environment files (do not commit secrets)
 .env

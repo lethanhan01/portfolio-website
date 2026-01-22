@@ -37,7 +37,7 @@ This repo is configured to deploy as a static site built by Webpack, with an opt
 Vercel will use [vercel.json](vercel.json) which sets:
 
 - **Build Command**: `npm run build`
-- **Output Directory**: `public`
+- **Output Directory**: `dist`
 
 ### 2) Configure environment variables (optional: email API)
 
