@@ -4,3 +4,8 @@ package-lock.json
 *.psd
 
 public/
+
+# Local environment files (do not commit secrets)
+.env
+.env.*
+!.env.example
